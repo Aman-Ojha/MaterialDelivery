@@ -1,0 +1,104 @@
+
+
+#--DEV-Profile--
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/portdb
+    username: postgres
+    password: pass
+    driver-class-name: org.postgresql.Driver   # optional but silences warnings
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+plant:
+  max-tonnage-per-hour: 9999
+  plant-name: Development Plant
+  maintenance-mode: false
+
+# src/main/resources/application.yml   ← edit this file
+---
+
+##--PROD-Profile--
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/portdb
+    username: postgres
+    password: pass
+    driver-class-name: org.postgresql.Driver   # optional but silences warnings
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+plant:
+  max-tonnage-per-hour: 3500
+  plant-name: Production Plant
+  maintenance-mode: false
+
+---
+#--TEST-Profile--
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:postgresql://localhost:5432/portdb
+    username: postgres
+    password: pass
+    driver-class-name: org.postgresql.Driver   # optional but silences warnings
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+plant:
+  max-tonnage-per-hour: 1000
+  plant-name: Test Plant
+  maintenance-mode: true
+
+
+#--Actuator settings (same for all profiles)--
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+  endpoint:
+    health:
+      show-details: always
+---
+# src/main/resources/application.yml   ← edit this file
+# spring:
+#   datasource:
+#     url: jdbc:postgresql://localhost:5432/portdb
+#     username: postgres
+#     password: pass
+#     driver-class-name: org.postgresql.Driver   # optional but silences warnings
+#   jpa:
+#     hibernate:
+#       ddl-auto: validate
+#     show-sql: true
+#   flyway:
+#     enabled: true
+#     locations: classpath:db/migration
+#     baseline-on-migrate: true
