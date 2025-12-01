@@ -11,5 +11,5 @@ public interface MaterialDeliveryRepository extends JpaRepository<MaterialDelive
     List<MaterialDelivery> findByPlantNameOrderByDeliveryTimeDesc(String plantName);
 
     @Query("SELECT COALESCE(SUM(d.tons),0) FROM MaterialDelivery d where d.plantName = :plantName")
-    long sumtTonsByPlantName(@Param("plantName") String plantName);
+    long sumTonsByPlantName(@Param("plantName") String plantName);
 }

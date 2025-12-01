@@ -1,5 +1,4 @@
 version: '3.8'               # ← add quotes (this is the real cause of your error)
-
 services:
   zookeeper:                 # ← move this block ABOVE kafka
     image: confluentinc/cp-zookeeper:7.6.0
@@ -12,7 +11,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092   # ← change localhost → kafka
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092   # ← change localhost → kafka
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     ports:
       - "9092:9092"
