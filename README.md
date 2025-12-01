@@ -15,6 +15,7 @@ This repository provides a REST endpoint to receive material deliveries, store t
 - `src/main/java` - application source
 - `src/main/resources` - configuration and Flyway migrations
 - `docker-compose.yml` - helper services (Kafka/Zookeeper/Postgres)
+ - `src/main/java/com/example/demo/kafka` - Kafka producer/consumer and event types
 
 **Prerequisites**
 - Java 17 (or compatible JDK)
@@ -90,19 +91,22 @@ Actuator endpoints (available when actuator is enabled):
 - `/actuator/health`
 - `/actuator/metrics`
 
+**Kafka integration**
+
+- The project includes a small Kafka integration under `src/main/java/com/example/demo/kafka`:
+  - `MaterialDeliveredEvent.java` — immutable record that models the event payload sent between services.
+  - `MaterialDeliveryEventProducer.java` — a simple producer that uses `KafkaTemplate` to send events to the `material-events` topic.
+  - `MaterialEventConsumer.java` — a consumer that listens on `material-events` (and `material-events.dlt`) and forwards processed events to the `DeliveryService`.
+
+- Topics used by the app:
+  - `material-events`
+  - `material-events.dlt` (dead-letter topic)
+
+- Spring Kafka is used; set `spring.kafka.bootstrap-servers` and any listener/container factory properties in your active profile when running locally.
+
 **Database migrations**
 
 Flyway migrations are stored under `src/main/resources/db/migration`. The first migration `V1__initial_schema.sql` creates the `material_delivery` table.
-
-**Testing**
-
-Run unit and integration tests with:
-
-```bash
-./mvnw test
-```
-
-The project includes Testcontainers dependencies for integration tests that need PostgreSQL.
 
 **Docker Compose**
 
