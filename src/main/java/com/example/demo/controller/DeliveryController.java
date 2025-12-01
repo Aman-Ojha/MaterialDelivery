@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.kafka.MaterialDeliveredEvent;
 import com.example.demo.kafka.MaterialDeliveryEventProducer;
+import com.example.demo.model.dto.MaterialDeliveryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.config.PlantConfig;
 import com.example.demo.model.dto.MaterialDeliveryRequest;
@@ -20,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/deliveries")
@@ -64,10 +63,22 @@ public class DeliveryController {
 
         log.info("Sending event to Kafka → key={} payload={}", event.plantName(), event);
         materialDeliveryEventProducer.send(event);
-
         return ResponseEntity.accepted().build();
-        
+    }
 
+    //Get all deliveries
+    @GetMapping
+    public ResponseEntity<List<MaterialDeliveryResponse>> getAllDeliveries() {
+        List<MaterialDeliveryResponse> deliveries = deliveryService.getAllDeliveries();
+        return ResponseEntity.ok(deliveries);
+    }
+
+    //Get delivery by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<MaterialDeliveryResponse> getDeliveryById(@PathVariable Long id) {
+        return deliveryService.getDeliveryById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

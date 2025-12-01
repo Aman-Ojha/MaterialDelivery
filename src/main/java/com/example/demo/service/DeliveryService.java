@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.kafka.MaterialDeliveredEvent;
+import com.example.demo.model.dto.MaterialDeliveryResponse;
 import com.example.demo.repository.MaterialDeliveryRepository;
 import com.example.demo.model.entity.MaterialDelivery;
 import com.example.demo.model.dto.MaterialDeliveryRequest;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +48,6 @@ public class DeliveryService {
     // THIS IS THE ONE USED BY KAFKA CONSUMER
     @Transactional
     public void recordDeliveryFromEvent(@Valid MaterialDeliveredEvent event) {
-//        validateTonnage(BigDecimal.valueOf(event.tons()));
 
         var entity = new MaterialDelivery(
                 null,
@@ -61,6 +63,30 @@ public class DeliveryService {
 
     public long currentStock(String plantName){
         return materialDeliveryRepository.sumTonsByPlantName(plantName);
+    }
+
+    /** Get ALL deliveries (most recent first) */
+    public List<MaterialDeliveryResponse> getAllDeliveries() {
+        return materialDeliveryRepository.findAllByOrderByDeliveryTimeDesc()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    /** Get a single delivery by ID */
+    public Optional<MaterialDeliveryResponse> getDeliveryById(Long id) {
+        return materialDeliveryRepository.findById(id)
+                .map(this::toResponse);
+    }
+
+    private MaterialDeliveryResponse toResponse(MaterialDelivery delivery) {
+        return new MaterialDeliveryResponse(
+                delivery.getId(),
+                delivery.getMaterialId(),
+                delivery.getTons(),
+                delivery.getDeliveryTime(),
+                delivery.getPlantName()
+        );
     }
 
 }
