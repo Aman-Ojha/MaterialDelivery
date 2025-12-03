@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public record MaterialDeliveredEvent(
-        @NotBlank        // or @NotNull if String can be empty
+        @NotBlank        
         String materialId,
 
         @Max(value = 9999)

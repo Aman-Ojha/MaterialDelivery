@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.kafka.MaterialDeliveredEvent;
 import com.example.demo.kafka.MaterialDeliveryEventProducer;
 import com.example.demo.model.dto.MaterialDeliveryResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.config.PlantConfig;
 import com.example.demo.model.dto.MaterialDeliveryRequest;
-import com.example.demo.model.entity.MaterialDelivery;
 import com.example.demo.service.DeliveryService;
 
 import jakarta.validation.Valid;
@@ -26,7 +24,6 @@ import java.util.List;
 @Slf4j
 public class DeliveryController {
 
-    //members
     private final PlantConfig plantConfig;
     private final DeliveryService deliveryService;
     private final MaterialDeliveryEventProducer materialDeliveryEventProducer;

@@ -14,7 +14,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 public class MaterialDeliveryEventProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void send(@Valid MaterialDeliveredEvent event) {  // ← validation runs automatically
+    public void send(@Valid MaterialDeliveredEvent event) {  
         log.info("Sending event to Kafka → topic=material-events key={} payload={}",
                 event.plantName(), event);
         kafkaTemplate.send("material-events", event.plantName(), event);

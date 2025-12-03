@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS material_delivery (
     id BIGSERIAL PRIMARY KEY,
     material_id VARCHAR(50) NOT NULL,

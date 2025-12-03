@@ -4,8 +4,6 @@ import com.example.demo.service.DeliveryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.apache.kafka.clients.consumer.ConsumerRecord;
-//import org.apache.kafka.common.header.Header;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -37,7 +35,7 @@ public class MaterialEventConsumer {
         } catch (Exception e) {
             log.error("Failed to process event {} (key={}), sending to DLT", event, key, e);
             producer.send(event);
-            ack.acknowledge(); // we handled it → commit offset
+            ack.acknowledge(); 
         }
     }
 

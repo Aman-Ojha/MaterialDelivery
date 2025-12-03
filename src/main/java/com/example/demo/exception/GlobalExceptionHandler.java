@@ -34,14 +34,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors.toString());
     }
 
-    // 3. Your own business exceptions
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleBusinessError(IllegalArgumentException ex) {
         log.warn("Business rule violation: {}", ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    // 4. Catch-all (optional – never let 500 with stack trace leak)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleEverything(Exception ex) {
         log.error("Unexpected error", ex);

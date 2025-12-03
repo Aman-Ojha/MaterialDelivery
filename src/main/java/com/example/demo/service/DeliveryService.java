@@ -12,10 +12,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +43,6 @@ public class DeliveryService {
 
     }
 
-    // THIS IS THE ONE USED BY KAFKA CONSUMER
     @Transactional
     public void recordDeliveryFromEvent(@Valid MaterialDeliveredEvent event) {
 
